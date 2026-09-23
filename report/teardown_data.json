@@ -1,0 +1,146 @@
+{
+  "batcher": {
+    "timestamp": "2026-09-16_223432",
+    "endpoint": "http://192.168.0.182:8000",
+    "model": "glm-5.3-flash",
+    "max_tokens": 150,
+    "requests_per_level": 8,
+    "levels": [
+      1,
+      2,
+      4
+    ],
+    "results": [
+      {
+        "concurrency": 1,
+        "requests": 8,
+        "ok": 8,
+        "failed": 0,
+        "wall_s": 20.68,
+        "prompt_tokens": 170,
+        "completion_tokens": 736,
+        "aggregate_tok_s": 43.8,
+        "completion_tok_s": 35.6,
+        "per_stream_tok_s": 35.6,
+        "wall_p50_s": 2.929,
+        "wall_p95_s": 5.319,
+        "wall_max_s": 5.32,
+        "fail_samples": []
+      },
+      {
+        "concurrency": 2,
+        "requests": 8,
+        "ok": 8,
+        "failed": 0,
+        "wall_s": 24.27,
+        "prompt_tokens": 187,
+        "completion_tokens": 909,
+        "aggregate_tok_s": 45.2,
+        "completion_tok_s": 37.4,
+        "per_stream_tok_s": 18.7,
+        "wall_p50_s": 6.202,
+        "wall_p95_s": 9.159,
+        "wall_max_s": 9.16,
+        "fail_samples": []
+      },
+      {
+        "concurrency": 4,
+        "requests": 8,
+        "ok": 8,
+        "failed": 0,
+        "wall_s": 20.38,
+        "prompt_tokens": 230,
+        "completion_tokens": 1154,
+        "aggregate_tok_s": 67.9,
+        "completion_tok_s": 56.6,
+        "per_stream_tok_s": 14.2,
+        "wall_p50_s": 9.686,
+        "wall_p95_s": 12.173,
+        "wall_max_s": 12.17,
+        "fail_samples": []
+      }
+    ],
+    "knee_concurrency": 2,
+    "notes": "wall-clock includes full request lifecycle; aggregate_tok_s includes prompt+completion tokens"
+  },
+  "spec_decode": {
+    "source": "truffle/benchmarks",
+    "acceptance_avg": 0.2193,
+    "accepted_per_cycle_avg": 1.535,
+    "per_concurrency": {
+      "1": 0.2251,
+      "2": 0.2095,
+      "4": 0.2232
+    },
+    "agg_tok_s": {
+      "1": 20.6,
+      "2": 30.2,
+      "4": 42.7
+    }
+  },
+  "gpu_partitioning": {
+    "source": "Circuiter/benchmarks",
+    "units": {
+      "tenant-a": 60.0,
+      "tenant-b": 40.0,
+      "tenant-c": 20.0
+    },
+    "ratios": {
+      "a/b": 1.5,
+      "a/c": 3.0
+    },
+    "violations": 263
+  },
+  "autoscaling": {
+    "source": "QueuedGPU/benchmarks",
+    "with_prewarm": {
+      "drain_s": 15.0,
+      "peak_queue": 34
+    },
+    "naive": {
+      "drain_s": 18.0,
+      "peak_queue": 42
+    }
+  },
+  "weight_delivery": {
+    "source": "UberCode/benchmarks",
+    "cold": {
+      "wall_s": 1.34,
+      "pulled": 12,
+      "cached": 0,
+      "verified": 12,
+      "bytes_pulled": 100664500
+    },
+    "warm": {
+      "wall_s": 0.79,
+      "pulled": 0,
+      "cached": 12,
+      "verified": 0,
+      "bytes_pulled": 100665704
+    },
+    "resumed": {
+      "wall_s": 0.88,
+      "pulled": 6,
+      "cached": 6,
+      "verified": 6,
+      "bytes_pulled": 50332852
+    }
+  },
+  "reliability": {
+    "source": "Flunk drill (documented in repo README)",
+    "rto_s": 1.1,
+    "rpo_requests": 2,
+    "detection_floor_s": 1.5
+  },
+  "security": {
+    "source": "Bastion attack drill (repo README)",
+    "checks": 11,
+    "passed": 11
+  },
+  "recovery": {
+    "source": "Furnace fault drill (repo README)",
+    "kill_step": 35,
+    "resume_step": 30,
+    "attempts_to_complete": 2
+  }
+}
