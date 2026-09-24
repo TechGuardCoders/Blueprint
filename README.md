@@ -1,10 +1,10 @@
-# Benchwarmer
+# Blueprint
 
 **The capstone teardown — the whole stack, measured, with provenance.**
 
-Every number below comes from a sibling repo's committed benchmark output or a live read-only scrape, and each names its source. Reproduce with `python benchwarmer.py` (aggregates sibling `benchmarks/` directories) — nothing here is hand-copied.
+Every number below comes from a sibling repo's committed benchmark output or a live read-only scrape, and each names its source. Reproduce with `python blueprint.py` (aggregates sibling `benchmarks/` directories) — nothing here is hand-copied.
 
-Part of the [TechGuardCoders portfolio](https://github.com/orgs/TechGuardCoders/repositories): Cost Peep → Batcher → Spinal → Ball Knowledge → Bastion → Furnace → Truffle → Popcorn → QueuedGPU → Circuiter → UberCode → Flunk → **Benchwarmer**.
+Part of the [TechGuardCoders portfolio](https://github.com/orgs/TechGuardCoders/repositories): Cost Peep → Batcher → Spinal → Ball Knowledge → Bastion → Furnace → Truffle → Popcorn → QueuedGPU → Circuiter → UberCode → Flunk → **Blueprint**.
 
 ## The architecture being torn down
 
@@ -69,6 +69,6 @@ $/1M tokens continuously against the live cluster; tenant attribution (gateway),
 ## Reproduce
 
 ```bash
-python benchwarmer.py          # aggregates sibling benchmarks + live scrape → report/teardown_data.json
+python blueprint.py          # aggregates sibling benchmarks + live scrape → report/teardown_data.json
 ```
 Each sibling repo has its own drill + CI proving its numbers independently.

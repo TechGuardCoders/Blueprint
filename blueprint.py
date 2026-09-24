@@ -1,5 +1,5 @@
 """
-Benchwarmer - the capstone teardown.
+Blueprint - the capstone teardown.
 
 One reproducible report over the whole stack. Every number here is either
 pulled from a sibling project's committed benchmark output or measured live

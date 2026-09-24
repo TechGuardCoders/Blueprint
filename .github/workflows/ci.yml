@@ -11,6 +11,6 @@ jobs:
         with: { python-version: "3.11" }
       - run: pip install pytest
       - name: teardown aggregation (no siblings in CI, must degrade gracefully)
-        run: python benchwarmer.py
+        run: python blueprint.py
       - name: report artifact exists
         run: test -f report/teardown_data.json && echo OK
