@@ -12,6 +12,7 @@ reproduction commands for every table.
 from __future__ import annotations
 
 import json
+import os
 import time
 import urllib.request
 from pathlib import Path
@@ -129,7 +130,7 @@ def main():
                      "kill_step": 35, "resume_step": 30,
                      "attempts_to_complete": 2},
     }
-    live = live_cost_snapshot("http://192.168.0.182:8000", None)
+    live = live_cost_snapshot(os.environ.get("VLLM_BASE_URL", "http://localhost:8000"), None)
     if live:
         sections["live_cluster_now"] = live
 
