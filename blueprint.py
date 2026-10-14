@@ -27,6 +27,37 @@ SIBLINGS = {
     "UberCode": HOME / "UberCode" / "benchmarks",
 }
 
+# Fleet provenance: which node each live/measured source runs on. Every
+# provenance record that touches the cluster carries its node label.
+FLEET_NODES = {
+    "glm-head": "http://192.168.0.182:8000",
+    "tensorfold": "http://192.168.0.157:8421",
+    "bonsai-1": "http://192.168.0.10:8422",
+    "bonsai-2": "http://192.168.0.144:8422",
+    "sushi": "http://192.168.0.11:8450",
+}
+NODE_FOR_SECTION = {
+    "batcher": "glm-head",
+    "spec_decode": "glm-head",
+    "gpu_partitioning": "glm-head",
+    "autoscaling": "glm-head",
+    "weight_delivery": "tensorfold",
+    "reliability": "glm-head",
+    "security": "glm-head",
+    "recovery": "tensorfold",
+    "live_cluster_now": "glm-head",
+}
+
+
+def with_node(section: dict | None, key: str) -> dict | None:
+    """Attach the fleet node label to a provenance record (idempotent)."""
+    if section is None:
+        return None
+    node = NODE_FOR_SECTION.get(key)
+    if node:
+        return {"node": node, **section}
+    return section
+
 
 def latest_json(d: Path, prefix: str) -> dict | None:
     if not d.exists():
@@ -116,23 +147,23 @@ def live_cost_snapshot(base_url: str, key: str | None) -> dict | None:
 
 def main():
     sections = {
-        "batcher": batcher_metrics(),
-        "spec_decode": spec_metrics(),
-        "gpu_partitioning": fairness_metrics(),
-        "autoscaling": autoscaler_metrics(),
-        "weight_delivery": delivery_metrics(),
-        "reliability": {"source": "Flunk drill (documented in repo README)",
-                        "rto_s": 1.1, "rpo_requests": 2,
-                        "detection_floor_s": 1.5},
-        "security": {"source": "Bastion attack drill (repo README)",
-                     "checks": 11, "passed": 11},
-        "recovery": {"source": "Furnace fault drill (repo README)",
-                     "kill_step": 35, "resume_step": 30,
-                     "attempts_to_complete": 2},
+        "batcher": with_node(batcher_metrics(), "batcher"),
+        "spec_decode": with_node(spec_metrics(), "spec_decode"),
+        "gpu_partitioning": with_node(fairness_metrics(), "gpu_partitioning"),
+        "autoscaling": with_node(autoscaler_metrics(), "autoscaling"),
+        "weight_delivery": with_node(delivery_metrics(), "weight_delivery"),
+        "reliability": with_node({"source": "Flunk drill (documented in repo README)",
+                                  "rto_s": 1.1, "rpo_requests": 2,
+                                  "detection_floor_s": 1.5}, "reliability"),
+        "security": with_node({"source": "Bastion attack drill (repo README)",
+                               "checks": 11, "passed": 11}, "security"),
+        "recovery": with_node({"source": "Furnace fault drill (repo README)",
+                               "kill_step": 35, "resume_step": 30,
+                               "attempts_to_complete": 2}, "recovery"),
     }
     live = live_cost_snapshot(os.environ.get("VLLM_BASE_URL", "http://localhost:8000"), None)
     if live:
-        sections["live_cluster_now"] = live
+        sections["live_cluster_now"] = with_node(live, "live_cluster_now")
 
     out = Path("report")
     out.mkdir(exist_ok=True)

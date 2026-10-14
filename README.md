@@ -72,3 +72,10 @@ $/1M tokens continuously against the live cluster; tenant attribution (gateway),
 python blueprint.py          # aggregates sibling benchmarks + live scrape → report/teardown_data.json
 ```
 Each sibling repo has its own drill + CI proving its numbers independently.
+
+## Fleet provenance
+
+Every provenance record now carries a `node` label naming the fleet node the
+metric was measured on (`FLEET_NODES` / `NODE_FOR_SECTION` in `blueprint.py`) —
+e.g. weight delivery → `tensorfold`, live scrape → `glm-head`. Aggregation
+behavior is unchanged.
