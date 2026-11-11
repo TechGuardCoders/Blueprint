@@ -1,0 +1,17 @@
+# syntax=docker/dockerfile:1
+# Multi-stage, multi-arch (amd64 + arm64), non-root runtime.
+
+FROM python:3.12-slim AS base
+WORKDIR /app
+COPY blueprint.py ./
+
+FROM base AS test
+RUN pip install --no-cache-dir pytest
+COPY tests/ tests/
+RUN python -m pytest tests/ -q
+
+FROM base AS runtime
+RUN useradd --create-home --uid 1000 appuser \
+    && mkdir -p /app/report && chown -R appuser:appuser /app
+USER appuser
+CMD ["python", "-c", "import blueprint; print('blueprint OK')"]

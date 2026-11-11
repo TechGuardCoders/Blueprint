@@ -79,3 +79,13 @@ Every provenance record now carries a `node` label naming the fleet node the
 metric was measured on (`FLEET_NODES` / `NODE_FOR_SECTION` in `blueprint.py`) —
 e.g. weight delivery → `tensorfold`, live scrape → `glm-head`. Aggregation
 behavior is unchanged.
+
+## Docker
+
+Multi-stage, multi-arch (amd64 + arm64), non-root runtime image.
+
+```bash
+docker build --target test .          # run the test suite in-container
+docker build -t blueprint .           # runtime image (smoke import)
+docker run --rm blueprint
+```
